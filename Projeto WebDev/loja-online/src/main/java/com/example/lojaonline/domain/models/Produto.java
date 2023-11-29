@@ -4,26 +4,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name= "Pessoa")
 @Getter
 @Setter
-public class PessoaModel {
+public class Produto {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idPessoa;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idProduto;
 
-    String nome;
+    private String name;
 
-    String email;
+    private Integer price;
 
-    String senha;
+    private String descricao;
 
-    String cidade;
+    private String imgSrc;
 
-    String uf;
 }
