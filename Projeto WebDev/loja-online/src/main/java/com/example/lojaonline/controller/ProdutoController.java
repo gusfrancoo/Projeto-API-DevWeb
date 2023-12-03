@@ -36,6 +36,7 @@ public class ProdutoController {
     }
 
 
+
     @PutMapping("/{id}")
     public Produto editarProduto(@PathVariable Long id, @RequestBody Produto prd ){
         return produtoService.editarProduto(id, prd);

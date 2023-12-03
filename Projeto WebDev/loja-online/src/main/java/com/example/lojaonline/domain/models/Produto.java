@@ -22,6 +22,6 @@ public class Produto {
 
     private String descricao;
 
-    private String imgSrc;
+    private String imageSrc;
 
 }

@@ -17,7 +17,7 @@ public class AccountController {
     @Autowired
     private final AccountService service = new AccountService();
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public Account register(@RequestBody RegisterDTO dto){
         return service.register(dto);
     }

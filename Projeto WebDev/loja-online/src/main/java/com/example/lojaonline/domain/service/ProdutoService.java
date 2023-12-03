@@ -28,6 +28,7 @@ public class ProdutoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe um produto com o mesmo nome.");
         } 
 
+
         return repository.save(prd);
 
     }
@@ -35,6 +36,17 @@ public class ProdutoService {
     public List<Produto> listarTodos(){
         Sort sortByDescricao = Sort.by(Sort.Direction.ASC, "descricao");
         return repository.findAll(sortByDescricao);
+    }
+
+    public Produto listaPorId(@PathVariable Long id){
+        Optional<Produto> produto = repository.findById(id);
+
+        if(produto.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não encontrado");
+        } else {
+            return produto.get();
+        }
+
     }
 
 
@@ -50,7 +62,7 @@ public class ProdutoService {
                 produtoAtualizado.setDescricao(prd.getDescricao());
                 produtoAtualizado.setName(prd.getName());
                 produtoAtualizado.setPrice(prd.getPrice());
-                produtoAtualizado.setImgSrc(prd.getImgSrc());
+                produtoAtualizado.setImageSrc(prd.getImageSrc());
                 repository.save(produtoAtualizado);
             }
 
