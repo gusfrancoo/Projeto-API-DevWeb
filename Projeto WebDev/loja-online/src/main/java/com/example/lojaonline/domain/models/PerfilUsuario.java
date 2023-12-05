@@ -4,34 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-public class Account {
-
+@Entity
+@Table(name="perfil_usuario")
+public class PerfilUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long idPerfilUsuario;
 
-    private String name;
-
-    private String username;
-
-    private String password;
-
-    private Integer ativo; //1- Sim, 2-Não
-
-    @OneToOne
-    @JoinColumn(name = "id_perfil_usuario")
-    private PerfilUsuario perfilUsuario;
-
+    private String descricao;
     
-
-
 }
