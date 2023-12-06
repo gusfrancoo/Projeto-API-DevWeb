@@ -9,16 +9,20 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.lojaonline.domain.models.Account;
 import com.example.lojaonline.domain.models.DadosComplementares;
+import com.example.lojaonline.domain.models.PerfilUsuario;
 import com.example.lojaonline.domain.models.dto.LoginDTO;
 import com.example.lojaonline.domain.models.dto.RegisterDTO;
 import com.example.lojaonline.domain.repository.AccountRepository;
 import com.example.lojaonline.domain.repository.DadosComplementaresRepository;
+import com.example.lojaonline.domain.repository.PerfilRepository;
 
 @Service
 public class AccountService {
 
     @Autowired
     private AccountRepository repository;
+
+
     @Autowired
     private DadosComplementaresRepository dadosRepository;
 
@@ -29,7 +33,6 @@ public class AccountService {
         newUser.setUsername(dto.getUsername());
         newUser.setPassword(dto.getPassword());
         newUser.setAtivo(1);
-        Account acc = repository.save(newUser);
         saveDadosComplementares(dto, acc.getId());
         return acc;
 
@@ -59,6 +62,8 @@ public class AccountService {
         
         if(acc.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já registrado!");
+        } else if (acc.get().getPerfilUsuario() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário sem perfil vinculado");
         }
 
         return acc.get();

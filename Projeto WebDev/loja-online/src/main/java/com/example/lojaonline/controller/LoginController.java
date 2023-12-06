@@ -25,10 +25,6 @@ public class LoginController {
         return tokenService.login(dto);
     }
 
-    // @GetMapping("/")
-    // public Token verificaConectado(){
-
-    // }
 
 
 
