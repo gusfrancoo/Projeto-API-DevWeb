@@ -33,6 +33,7 @@ public class AccountService {
         newUser.setUsername(dto.getUsername());
         newUser.setPassword(dto.getPassword());
         newUser.setAtivo(1);
+        Account acc = repository.save(newUser);
         saveDadosComplementares(dto, acc.getId());
         return acc;
 
@@ -62,9 +63,7 @@ public class AccountService {
         
         if(acc.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já registrado!");
-        } else if (acc.get().getPerfilUsuario() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário sem perfil vinculado");
-        }
+        } 
 
         return acc.get();
     }
