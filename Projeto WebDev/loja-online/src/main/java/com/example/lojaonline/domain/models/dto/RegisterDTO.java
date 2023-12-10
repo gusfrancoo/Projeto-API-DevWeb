@@ -11,11 +11,5 @@ public class RegisterDTO {
     
     private String password;
 
-    private String cidade;
 
-    private String logradouro;
-
-    private String uf;
-
-    private String bairro;
 }

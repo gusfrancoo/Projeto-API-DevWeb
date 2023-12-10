@@ -23,8 +23,8 @@ public class AccountService {
     private AccountRepository repository;
 
 
-    @Autowired
-    private DadosComplementaresRepository dadosRepository;
+    // @Autowired
+    // private DadosComplementaresRepository dadosRepository;
 
     public Account register(RegisterDTO dto){
         existsByUsername(dto.getUsername());
@@ -34,29 +34,29 @@ public class AccountService {
         newUser.setPassword(dto.getPassword());
         newUser.setAtivo(1);
         Account acc = repository.save(newUser);
-        saveDadosComplementares(dto, acc.getId());
+        // saveDadosComplementares(dto, acc.getId());
         return acc;
 
     }
 
-    public DadosComplementares saveDadosComplementares(RegisterDTO dto, Long id){
-        DadosComplementares endCliente = new DadosComplementares();
-        endCliente.setBairro(dto.getBairro());
-        endCliente.setCidade(dto.getCidade());
-        endCliente.setLogradouro(dto.getLogradouro());
-        endCliente.setUf(dto.getUf());
+    // public DadosComplementares saveDadosComplementares(RegisterDTO dto, Long id){
+    //     DadosComplementares endCliente = new DadosComplementares();
+    //     endCliente.setBairro(dto.getBairro());
+    //     endCliente.setCidade(dto.getCidade());
+    //     endCliente.setLogradouro(dto.getLogradouro());
+    //     endCliente.setUf(dto.getUf());
 
-        Optional<Account> conta = repository.findById(id);
+    //     Optional<Account> conta = repository.findById(id);
 
-        if(conta.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta não encontrada!");
-        } else {
-            endCliente.setAccount(conta.get());
-        }
-        return dadosRepository.save(endCliente);
+    //     if(conta.isEmpty()){
+    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta não encontrada!");
+    //     } else {
+    //         endCliente.setAccount(conta.get());
+    //     }
+    //     return dadosRepository.save(endCliente);
 
 
-    }
+    // }
 
     public Account getByLogin(LoginDTO dto) {
         Optional<Account> acc = repository.findByUsernameAndPassword(dto.getUsername().trim(), dto.getPassword().trim());
