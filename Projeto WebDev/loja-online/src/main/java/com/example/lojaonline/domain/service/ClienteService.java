@@ -21,9 +21,20 @@ public class ClienteService {
         return repository.findAll();
     }
 
+    public Cliente findByCpf(String cpf){
+        Optional<Cliente> cli = repository.findByCpfCnpj(cpf);
+
+        if (cli.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente não foi encontrado");
+        } else {
+            
+            return cli.get();
+        }
+    }
+
     public Cliente salvaCliente(Cliente cli){
 
-        Optional<Cliente> cpf =  repository.findByCpf(cli.getCpfCnpj());
+        Optional<Cliente> cpf =  repository.findByCpfCnpj(cli.getCpfCnpj());
 
         if (cpf.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF já se encontra cadastrado");

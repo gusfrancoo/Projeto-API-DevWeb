@@ -1,5 +1,6 @@
 package com.example.lojaonline.domain.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,9 +22,13 @@ public class Account {
 
     private String name;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
+
+    @Column(name = "cpf_cnpj", unique = true)
+    private String cpfCnpj;
 
     private Integer ativo; //1- Sim, 2-Não
 

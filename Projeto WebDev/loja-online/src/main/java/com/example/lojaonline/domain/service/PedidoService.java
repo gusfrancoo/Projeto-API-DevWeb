@@ -1,5 +1,6 @@
 package com.example.lojaonline.domain.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.text.html.Option;
@@ -35,16 +36,18 @@ public class PedidoService {
     ProdutoRepository prodRepository;
 
     public Pedido criaPedido(PedidoDTO dto){
-        existeCliente(dto.getCpfCnpj());
-        Cliente newCliente = new Cliente(); 
-        newCliente.setEmail(dto.getEmail());
-        newCliente.setCpfCnpj(dto.getCpfCnpj());
-        Cliente cli = cliRepository.save(newCliente); 
-        insereEnd(dto, cli.getIdCliente());
-        inserePedido(dto, cli.getIdCliente());
-        
-
-        return null;
+        try {
+            existeCliente(dto.getCpfCnpj());
+            Cliente newCliente = new Cliente(); 
+            newCliente.setEmail(dto.getEmail());
+            newCliente.setCpfCnpj(dto.getCpfCnpj());
+            Cliente cli = cliRepository.save(newCliente); 
+            insereEnd(dto, cli.getIdCliente());
+            return inserePedido(dto, cli.getIdCliente());
+            
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     public Pedido inserePedido(PedidoDTO dto, Long idCliente){
@@ -70,10 +73,11 @@ public class PedidoService {
 
 
     public DadosComplementares insereEnd(PedidoDTO dto, Long idCliente){
-        Optional<DadosComplementares> verificaEnd = endRepository.findByidCliente(idCliente);
+        List<Integer> verificaEnd = endRepository.existeEndereco(idCliente);
         
-        if(verificaEnd.isPresent()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe um endereço cadastrado para esse cliente")
+        if(verificaEnd.get(0) > 0){
+            
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe um endereço cadastrado para esse cliente");
         } else {
             DadosComplementares newEnd = new DadosComplementares();
             newEnd.setBairro(dto.getBairro());
@@ -96,7 +100,7 @@ public class PedidoService {
 
 
     public void existeCliente(String cpf){
-        if (cliRepository.findByCpf(cpf).isPresent()) {
+        if (cliRepository.findByCpfCnpj(cpf).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF já cadastrado");
         }
     }

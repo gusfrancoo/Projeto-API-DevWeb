@@ -10,11 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.lojaonline.domain.models.Account;
 import com.example.lojaonline.domain.models.DadosComplementares;
 import com.example.lojaonline.domain.models.PerfilUsuario;
+import com.example.lojaonline.domain.models.Token;
 import com.example.lojaonline.domain.models.dto.LoginDTO;
 import com.example.lojaonline.domain.models.dto.RegisterDTO;
 import com.example.lojaonline.domain.repository.AccountRepository;
 import com.example.lojaonline.domain.repository.DadosComplementaresRepository;
 import com.example.lojaonline.domain.repository.PerfilRepository;
+import com.example.lojaonline.domain.repository.TokenRepository;
 
 @Service
 public class AccountService {
@@ -23,57 +25,61 @@ public class AccountService {
     private AccountRepository repository;
 
 
+
+
+
     // @Autowired
     // private DadosComplementaresRepository dadosRepository;
 
     public Account register(RegisterDTO dto){
-        existsByUsername(dto.getUsername());
-        Account newUser = new Account();
-        newUser.setName(dto.getName());
-        newUser.setUsername(dto.getUsername());
-        newUser.setPassword(dto.getPassword());
-        newUser.setAtivo(1);
-        Account acc = repository.save(newUser);
-        // saveDadosComplementares(dto, acc.getId());
-        return acc;
+        try {
+            existsByCpfCnpj(dto.getCpfCnpj());
+            Account newUser = new Account();
+            newUser.setName(dto.getName());
+            newUser.setUsername(dto.getUsername());
+            newUser.setPassword(dto.getPassword());
+            newUser.setCpfCnpj(dto.getCpfCnpj());
+            newUser.setAtivo(1);
+            Account acc = repository.save(newUser);
+            return acc;
+            
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
 
     }
 
-    // public DadosComplementares saveDadosComplementares(RegisterDTO dto, Long id){
-    //     DadosComplementares endCliente = new DadosComplementares();
-    //     endCliente.setBairro(dto.getBairro());
-    //     endCliente.setCidade(dto.getCidade());
-    //     endCliente.setLogradouro(dto.getLogradouro());
-    //     endCliente.setUf(dto.getUf());
+    public void existsByCpfCnpj(String cpf){
+        if(repository.findByCpfCnpj(cpf).isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF já cadastrado");
+        }
+    }
 
-    //     Optional<Account> conta = repository.findById(id);
-
-    //     if(conta.isEmpty()){
-    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Conta não encontrada!");
-    //     } else {
-    //         endCliente.setAccount(conta.get());
-    //     }
-    //     return dadosRepository.save(endCliente);
-
-
-    // }
 
     public Account getByLogin(LoginDTO dto) {
         Optional<Account> acc = repository.findByUsernameAndPassword(dto.getUsername().trim(), dto.getPassword().trim());
         
         if(acc.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já registrado!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado!");
         } 
 
         return acc.get();
     }
 
+    public Account getByUsername(String username){
+        Optional<Account> acc = repository.findByUsername(username);
+        if(acc.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não encontrado");
+        } 
 
-
-    public void existsByUsername(String username){
-        if(repository.findByUsername(username).isPresent()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já registrado!");
-        }
+        return acc.get();
     }
+
+    // public void existsByUsername(String username){
+    //     if(repository.findByUsername(username).isPresent()){
+    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já registrado!");
+    //     }
+    // }
     
 }

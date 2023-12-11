@@ -18,4 +18,5 @@ public class PedidoDTO {
     private String uf;
 
     private String bairro;
+    
 }

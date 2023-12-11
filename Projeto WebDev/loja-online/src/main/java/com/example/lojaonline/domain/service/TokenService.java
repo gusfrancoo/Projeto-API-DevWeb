@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,6 +32,19 @@ public class TokenService {
         return repository.save(token);
     }
 
+    public Token findByToken(String token){
+        try {
+
+            return validateToken(token);
+            
+        } catch (Exception e) {
+            
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+
+    }
+
 
     public Token validateToken(String token){
         Optional<Token> t = repository.findByToken(token);
@@ -45,5 +57,7 @@ public class TokenService {
 
         return t.get();
     }
+
+
 
 }

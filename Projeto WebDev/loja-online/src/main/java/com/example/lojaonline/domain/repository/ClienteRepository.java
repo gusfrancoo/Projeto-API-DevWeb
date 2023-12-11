@@ -9,5 +9,5 @@ import com.example.lojaonline.domain.models.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    Optional<Cliente> findByCpf(String cpf);
+    Optional<Cliente> findByCpfCnpj(String cpf);
 }
