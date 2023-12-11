@@ -44,10 +44,9 @@ public class PerfilUsuarioService {
             return repository.save(user.get());
 
         } catch (Exception e) {
-            // TODO: handle exception
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possível vincular o token a um usuario");
         }
 
-        return null;
     }
 
 }

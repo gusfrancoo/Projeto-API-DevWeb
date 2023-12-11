@@ -98,6 +98,15 @@ public class PedidoService {
         }
     }
 
+    public List<Pedido> findByCpf(String cpf){
+        List<Pedido> ped = pedidoRepository.findByCpfCnpj(cpf);
+
+        if(ped.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi encontrado pedidos para esse cpf");
+        }
+        return ped;
+    }
+
 
     public void existeCliente(String cpf){
         if (cliRepository.findByCpfCnpj(cpf).isPresent()) {
