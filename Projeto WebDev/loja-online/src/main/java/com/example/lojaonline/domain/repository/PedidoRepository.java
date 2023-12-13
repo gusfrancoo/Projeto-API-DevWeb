@@ -13,5 +13,6 @@ import com.example.lojaonline.domain.models.Cliente;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long>{
     List<Pedido> findByCliente(Cliente cliente);
+    List<Pedido> findByCpfCnpj(String cpfCnpj);
     
 } 
