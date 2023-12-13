@@ -17,6 +17,7 @@ public class AccountController {
     @Autowired
     private final AccountService service = new AccountService();
 
+    // Rota para cadastro de um usuário
     @PostMapping("/register")
     public Account register(@RequestBody RegisterDTO dto){
         return service.register(dto);

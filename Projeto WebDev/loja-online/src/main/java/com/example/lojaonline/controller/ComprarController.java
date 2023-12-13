@@ -26,12 +26,13 @@ public class ComprarController {
     @Autowired
     PedidoService pedidoService;
 
+    // Retorna o produto buscando pelo id
     @GetMapping("/{id}")
     public Produto listaPorId(@PathVariable Long id) {
         return service.listaPorId(id);
     }
     
-
+    // Cria um novo pedido de venda
     @PostMapping("/")
     public Pedido criaPedido(@RequestBody  PedidoDTO dto) {
         return pedidoService.criaPedido(dto);

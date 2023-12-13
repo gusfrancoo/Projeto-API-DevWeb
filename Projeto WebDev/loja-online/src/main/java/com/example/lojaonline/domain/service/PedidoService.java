@@ -35,6 +35,7 @@ public class PedidoService {
     @Autowired
     ProdutoRepository prodRepository;
 
+    // Cria um registro de pedido de venda
     public Pedido criaPedido(PedidoDTO dto){
         try {
             existeCliente(dto.getCpfCnpj());
@@ -50,28 +51,42 @@ public class PedidoService {
         }
     }
 
+    
     public Pedido inserePedido(PedidoDTO dto, Long idCliente){
+        // Cria nova instância da classe pedido
         Pedido pedido = new Pedido();
+
+        // Define um valor para o Cpf
         pedido.setCpfCnpj(dto.getCpfCnpj());
+
+        // Busca o produto pelo id
         Optional<Produto> prd = prodRepository.findById(dto.getIdProduto());
 
+        // Se o produto existir, define o valor de produto na tabela pedido
         if(prd.isPresent()){
             pedido.setProduto(prd.get());
+
+            // Valor sendo travado para que pegue apenas o preço unitário
             pedido.setValorVenda(prd.get().getPrice());
+
         } else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto informado não foi encontrado");
         }
+        // Quantidade fixada em 1 para facilitar e agilizar o desenvolvimento
         pedido.setQtde(1);
+
+        // Busca cliente pelo id
         Optional<Cliente> getCli = cliRepository.findById(idCliente);
         pedido.setCliente(getCli.get());
 
         Pedido ped = pedidoRepository.save(pedido);
-        
+
+        // Retorna um pedido
         return ped;
 
     }
 
-
+    // Função criada para inserir o endereço nos Dados complementares a partir do id do cliente
     public DadosComplementares insereEnd(PedidoDTO dto, Long idCliente){
         List<Integer> verificaEnd = endRepository.existeEndereco(idCliente);
         

@@ -13,6 +13,9 @@ import com.example.lojaonline.domain.models.dto.LoginDTO;
 import com.example.lojaonline.domain.repository.AccountRepository;
 import com.example.lojaonline.domain.repository.PerfilRepository;
 
+// Classe implementada mas não utilizada para agilizar a entrega do projeto
+// Será implementada num futuro projeto
+
 @Service
 public class PerfilUsuarioService {
     @Autowired
@@ -21,7 +24,7 @@ public class PerfilUsuarioService {
     @Autowired
     private PerfilRepository perfilRepository;
 
-
+    
     public Account getUser(String username){
         Optional<Account> user = repository.findByUsername(username);
 

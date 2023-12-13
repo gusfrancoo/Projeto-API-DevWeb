@@ -20,11 +20,13 @@ public class ProdutoService {
     @Autowired
     public ProdutoRepository repository;
 
+    // Método para salvar um novo produto
     public Produto salvarProduto(@RequestBody Produto prd){
 
         Optional<Produto> validaProduto = repository.findByName(prd.getName());
 
         if(validaProduto.isPresent()){
+            // Em caso de erro, retorna uma Excessão
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe um produto com o mesmo nome.");
         } 
 
@@ -32,7 +34,7 @@ public class ProdutoService {
         return repository.save(prd);
 
     }
-
+    
     public List<Produto> listarTodos(){
         Sort sortByDescricao = Sort.by(Sort.Direction.ASC, "descricao");
         return repository.findAll(sortByDescricao);

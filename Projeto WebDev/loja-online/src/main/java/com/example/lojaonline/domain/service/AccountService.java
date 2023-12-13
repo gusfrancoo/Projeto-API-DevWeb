@@ -20,17 +20,15 @@ import com.example.lojaonline.domain.repository.TokenRepository;
 
 @Service
 public class AccountService {
-
+    
+    // Inicializa o repositório
     @Autowired
     private AccountRepository repository;
 
 
 
 
-
-    // @Autowired
-    // private DadosComplementaresRepository dadosRepository;
-
+    // Cria o registro de um usuário
     public Account register(RegisterDTO dto){
         try {
             existsByCpfCnpj(dto.getCpfCnpj());
@@ -46,17 +44,16 @@ public class AccountService {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-
-
     }
 
+    // Busca por cpf para validação
     public void existsByCpfCnpj(String cpf){
         if(repository.findByCpfCnpj(cpf).isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF já cadastrado");
         }
     }
 
-
+    // Valida Login
     public Account getByLogin(LoginDTO dto) {
         Optional<Account> acc = repository.findByUsernameAndPassword(dto.getUsername().trim(), dto.getPassword().trim());
         
@@ -67,6 +64,7 @@ public class AccountService {
         return acc.get();
     }
 
+    // Busca pelo username do usuario
     public Account getByUsername(String username){
         Optional<Account> acc = repository.findByUsername(username);
         if(acc.isEmpty()){
@@ -75,11 +73,4 @@ public class AccountService {
 
         return acc.get();
     }
-
-    // public void existsByUsername(String username){
-    //     if(repository.findByUsername(username).isPresent()){
-    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já registrado!");
-    //     }
-    // }
-    
 }
